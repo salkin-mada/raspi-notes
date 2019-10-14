@@ -15,10 +15,10 @@ and run it either as headless or with the full scide (but for now without help d
 * `sudo raspi-config`
   - Change User Password
   - enable SSH in Interfacing Options (if not already done or default)
-  -- optional also...
-  --- (change hostname)
-  --- (enable VNC if needed)
-  - finish and reboot
+  - optional...
+  - also change hostname
+  - also enable VNC (if needed)
+  -  _finish and reboot_
 * open the terminal again and continue with these commands...
 * `sudo apt-get update`
 * `sudo apt-get upgrade` #optional - takes a while
