@@ -56,10 +56,12 @@ KNOWN ISSUES:
     2. __windows__ download and install [advanced ip scanner](http://www.advanced-ip-scanner.com/)
     3. __linux__ or if you want to do terminal kung fu network stuff on mac and windows (some commands (`awk`) not available on windows)
         - if you dont have nmap use: `sudo apt-get install nmap`
-        -`sudo nmap -sP 1.2.3.0/24 | awk '/^Nmap/{ip=$NF}/DC:A6:32/{print ip}'` (use this for raspberry pi 4)
-        -`sudo nmap -sP 1.2.3.0/24 | awk '/^Nmap/{ip=$NF}/B8:27:EB/{print ip}'` (use this for raspberry pi 2 and 3)
-        if you want to know more about this scroll down to the __# general notes__ section (with instructions to install 'Nmap' on Mac and Windows)
-        - you can also use `sudo arp-scan` (linux) and `sudo arp` (macOS)
+        - `sudo nmap -sP 1.2.3.0/24 | awk '/^Nmap/{ip=$NF}/DC:A6:32/{print ip}'` (use this for raspberry pi 4)
+        - `sudo nmap -sP 1.2.3.0/24 | awk '/^Nmap/{ip=$NF}/B8:27:EB/{print ip}'` (use this for raspberry pi 2 and 3)
+        - if you want to know more about this scroll down to the __# general notes__ section (with instructions to install 'Nmap' on Mac and Windows)
+        - you can also use `sudo arp-scan` (linux) and `sudo arp` (macOS) 
+            - to learn more use the open help for a commadn with --help like so `sudo arp-scan --help`
+            - again to install something use `sudo apt-get install arp-scan` as an example. 
     
 5. then log in via ssh...
     1. `ssh pi@192.169.0.22` - use the ip of your rpi which you discovered on the network in the step above
