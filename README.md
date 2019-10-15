@@ -1,5 +1,5 @@
 
-# notes for 'Skandinavisk SuperCollider Klubb Møde' 14th October 2019 (rpi workshop)
+# notes for 'Skandinavisk SuperCollider Klubb Møte' 14th October 2019 (rpi workshop)
 
 ## set up SuperCollider on a rpi2, rpi3 or rpi4
 
@@ -28,7 +28,7 @@ then we proceed to the setup _scroll down for *setup via ssh* (headless)_
     - finish and reboot
 * then continue with these commands...
 * `sudo apt-get update`
-* `sudo apt-get upgrade` #optional - takes a while, but if not now then it is a idea to do this later when you have time
+* `sudo apt-get upgrade` #optional - takes a while, but if not now then it is a good idea to do this later when you have time
 * `sudo apt-get dist-upgrade` #optional - same as above
 
 * _install SuperCollider Standalone_
@@ -47,40 +47,36 @@ KNOWN ISSUES:
 
 ## set up SuperCollider via ssh aka headless
 
-* first we need to enable ssh so we can access the rpi remotely.
+1. first we need to enable ssh so we can access the rpi remotely.
     - from your laptop/pc place an empty file called 'ssh' in the root of the raspbian sd card. it is called 'boot' 
-* connect ethernet on the rpi to the same network as your laptop/pc
-* plug in power
-* find the rpi's ip address on the network
-    - _macOS_ download and install [lanscan](https://www.iwaxx.com/lanscan/) 
-    - _windows_ download and install [advanced ip scanner](http://www.advanced-ip-scanner.com/)
-    - _linux_ or if you want to do terminal kung fu network stuff on mac and windows (some commands not available on windows)
-    ⋅⋅⋅ `sudo nmap -sP 1.2.3.0/24 | awk '/^Nmap/{ip=$NF}/DC:A6:32/{print ip}'` (use this for raspberry pi 4)
-    ⋅⋅⋅ `sudo nmap -sP 1.2.3.0/24 | awk '/^Nmap/{ip=$NF}/B8:27:EB/{print ip}'` (use this for raspberry pi 2 and 3)
-    ⋅⋅⋅  if you want to know more about this scroll down to the _OUI and finding ip's_ section (with instructions to install nmap on Mac and Windows)
-    - and if you dont have nmap use: `sudo apt-get install nmap` (linux)
-    ⋅⋅⋅ you can also use `sudo arp-scan` (linux) and `sudo arp` (macOS)
-    - if you need to find the ip of your own computer or of the rpi when logged in use:
-    ⋅⋅⋅ `ip addr show` (debian, ifconfig is deprecated)
-    ⋅⋅⋅ `ifconfig` (macOS / linux)
-    ⋅⋅⋅ `ipconfig` (windows)
-* then log in via ssh...
-    - `ssh pi@192.169.0.22` - use the ip of your rpi which you discovered on the network in the step above
-    - if it is the first time you connect via ssh on your laptop/pc to this rpi type `yes` to the question about 256SHA fingerprint and hit enter
-    - input the password of your rpi and hit enter
-* success! you should now see a terminal line with `pi@raspberrypi`
-* then proceed and type...
-* `sudo raspi-config`
-    - change hostname (this will be the name of your rpi instead of `rapberrypi`)
-    - change User Password
-    - go to *Interfacing Options* and enable VNC (if needed)
-    - finish and reboot
-* log in again via ssh
+2. connect ethernet on the rpi to the same network as your laptop/pc
+3. plug in power
+4. find the ip address of your rpi on the local network
+    1. __macOS__ download and install [lanscan](https://www.iwaxx.com/lanscan/) 
+    2. __windows__ download and install [advanced ip scanner](http://www.advanced-ip-scanner.com/)
+    3. __linux__ or if you want to do terminal kung fu network stuff on mac and windows (some commands (`awk`) not available on windows)
+        - if you dont have nmap use: `sudo apt-get install nmap`
+        -`sudo nmap -sP 1.2.3.0/24 | awk '/^Nmap/{ip=$NF}/DC:A6:32/{print ip}'` (use this for raspberry pi 4)
+        -`sudo nmap -sP 1.2.3.0/24 | awk '/^Nmap/{ip=$NF}/B8:27:EB/{print ip}'` (use this for raspberry pi 2 and 3)
+        if you want to know more about this scroll down to the __# general notes__ section (with instructions to install 'Nmap' on Mac and Windows)
+        - you can also use `sudo arp-scan` (linux) and `sudo arp` (macOS)
+    
+5. then log in via ssh...
+    1. `ssh pi@192.169.0.22` - use the ip of your rpi which you discovered on the network in the step above
+    2. if it is the first time you connect via ssh on your laptop/pc to this rpi type `yes` to the question about 256SHA fingerprint and hit enter
+    3. input the password of your rpi and hit enter
+6. success! you should now see a terminal line with `pi@raspberrypi`
+7. then proceed and do a `sudo raspi-config`
+    1. change hostname (this will be the name of your rpi instead of `rapberrypi`)
+    2. change User Password
+    3. go to *Interfacing Options* and enable VNC (if needed)
+    4. finish and reboot
+8. log in again via ssh
     - this time you should see that it will result in `pi@theNewNameOfYourRaspberryPi`
-* then continue with these commands...
-* `sudo apt-get update`
-* `sudo apt-get upgrade` #optional - takes a while, but if not now then it is a idea to do this later when you have time
-* `sudo apt-get dist-upgrade` #optional - same as above
+then continue with these commands...
+1. `sudo apt-get update`
+2. `sudo apt-get upgrade` #optional - takes a while, but if not now then it is a good idea to do this later when you have time
+3. `sudo apt-get dist-upgrade` #optional - same as above
 
 * _install SuperCollider Standalone_
 instructions copied from Fredriks' [repo](https://github.com/redFrik/supercolliderStandaloneRPI2#installation))
@@ -252,7 +248,7 @@ Ndef(\blabla).free; // stop audio and post window info (poll)
 note that _if_ cmd+. or ctrl+. is used to stop the sound, we need to rebuild the responders and kontrol rate ndefs above
 
 
-# more general notes
+# general notes
 
 ## OUI, nmap and finding rpi ip's
 
@@ -309,9 +305,13 @@ As of October 2019 all Raspberry devices MAC addresses starts with B8:27:EB (old
     - If you like to use [Wireshark](https://www.wireshark.org/) you can use the following display filter:
     - `eth.addr[0:3] == B8:27:EB` or `eth.addr[0:3] == DC:A6:32`
 
+__if you need to find the ip of the computer or rpi that you are logged into:__
+`ip addr show` (debian, ifconfig is deprecated)
+`ifconfig` (macOS / linux)
+`ipconfig` (windows)
 
 ## notes on shutdown/halt/poweroff commands
-first off, yes... welcome to linux. there is a lot of ways to shutdown (change the state) of your Raspberry Pi
+First off, yes... welcome to Linux. There is a lot of different ways to do "one" thing.
 
 #### shutdown command
 schedules a time for the system to be powered down. You can also use it to halt, power-off or reboot the machine.
@@ -430,15 +430,13 @@ note this is for raspbian jessie (and possibly newer buster - not tested) (thing
 
 ## backup the sd card
 
-insert the sd card into a mac osx laptop and type
+* insert the sd card into a laptop/pc and type...
+    - `diskutil list`
 
-`diskutil list`
+* verify that your sd card is mounted at /dev/disk2 with:
+    - sudo dd bs=4m if=/dev/rdisk2 of=/Users/asdf/Desktop/ting2backup20170525.img`
 
-verify that your sd card is mounted at /dev/disk2 and then do...
-
-`sudo dd bs=4m if=/dev/rdisk2 of=/Users/asdf/Desktop/ting2backup20170525.img`
-
-with a 16gb card this process takes ~4.5min and it can easily be restored with <http://etcher.io>
+with a 16gb card this process takes a couple of minutes and it can easily be restored with <http://etcher.io>
 
 ## how to solve problems when mounting a usb drive:
 
