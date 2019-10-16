@@ -280,11 +280,11 @@ according to http://standards-oui.ieee.org/oui.txt.
 
 The _Raspberry Pi 4 Model B_ already has the new OUI.
 
-* this makes it pissible to print all ip's of raspberry 3's and 4's on the network like this:
+* this makes it possible to print all ip's of raspberry pi's on the network like this:
     - `sudo nmap -sP 192.168.1.0/24 | awk '/^Nmap/{ip=$NF}/DC:A6:32/{print ip}'`
     - `sudo nmap -sP 192.168.1.0/24 | awk '/^Nmap/{ip=$NF}/B8:27:EB/{print ip}'`
-    ⋅⋅⋅ where 192.168.1.* is your local network mask
-    ⋅⋅⋅ to find you local network mask use a command like `ip addr show` or `ifconfig` or `ipconfig` depending on your system.
+        - where 192.168.1.* is your local network mask
+    -to find you local network mask use a command like `ip addr show` or `ifconfig` or `ipconfig` depending on your system.
 * you can also use `nmap -R 1.2.3.4` to see if tcp ports for ssh or vnc is open(enabled)
     - where 1.2.3.4 is the ip of your raspberry pi.
 
@@ -321,7 +321,7 @@ schedules a time for the system to be powered down. You can also use it to halt,
 please note that: if the time argument is used, in advance of the system shutting down the /run/nologin file is created to ensure that further login attempts will be rejected.
 
 * `sudo shutdown`           #shutdown, but wait for all services to correctly stop (this can make the shutdown procedure longer)
-    - and if a service for some reason hangs, it could drag the shutdown procedure to a very long experience...
+    - and if a service for some reason hangs, it could drag the shutdown procedure to a longer than instant experience...
 * `sudo shutdown now`       #shutdown now
 * `sudo shutdown 14:00`     #shutdown the machine at 2'oclock
 * `sudo shutdown -p now`	#poweroff the machine now
@@ -393,6 +393,8 @@ for this we will use the [cron](https://en.wikipedia.org/wiki/Cron) daemon and a
   - `crontab -e` #and add the following...
   - `@reboot python /home/pi/shutdown.py`
 
+_thanks to redFrik_
+
 ## shutdown your rpi with a network command
 
 * add this somewhere to your rpi SuperCollider code
@@ -457,7 +459,7 @@ an example of how to set up a python script that monitor and restart supercollid
 
 * install xvfb
     - `sudo apt-get install xvfb`
-* install pyosc if needed
+* install pyosc
     - `pip install pyosc --pre`
 * make the below script start at bootup
     - `@reboot cd /home/pi/supercolliderStandaloneRPI2 && python surveillance.py`
@@ -469,9 +471,6 @@ an example of how to set up a python script that monitor and restart supercollid
 #a script for checking if sc is alive
 #send it an osc message once every x second
 #else sc + jack will be forcefully restarted
-
-#first install pyosc with this command...
-#   pip install pyosc --pre
 
 import subprocess
 from time import sleep
@@ -513,7 +512,7 @@ server_thread.join()
 print 'done'
 ```
 
-then from sc do something like this to send a keep alive message from sclang
+then in sc do something like this to send a keep alive message from sclang
 
 ```supercollider
 Routine.run({
@@ -547,12 +546,21 @@ qt-webengine note: until resolved, SuperCollider IDE needs to be built without q
     - `git checkout 3.10`
     - `git submodule init && git submodule update`
     - `mkdir build && cd build`
-    - `cmake -L -DCMAKE_BUILD_TYPE="Release" -DBUILD_TESTING=OFF -DSUPERNOVA=OFF -DNATIVE=ON -DSC_IDE=ON -DSC_QT=ON -DSC_USE_QTWEBENGINE:BOOL=OFF -DSC_ED=OFF -DSC_EL=OFF -DSC_VIM=ON ..`
-    - `make -j3` #use -j3 flag only for quadcore rpi models (rpi3 or newer) 
+    - `cmake -L -DCMAKE_BUILD_TYPE="Release" -DBUILD_TESTING=OFF -DSUPERNOVA=OFF -DNATIVE=ON -DSC_IDE=ON -DSC_QT=ON -DSC_USE_QTWEBENGINE:BOOL=OFF -DSC_ED=OFF -DSC_EL=OFF -DSC_VIM=ON ..` don't forget the two `..` in the end
+    - `make -j3` #use -j3 flag only for quadcore rpi models (rpi3 or rpi4) 
     - `sudo make install`
     - `sudo ldconfig` (and finish with some library housekeeping)
 
 The make `-j` option allows multiple jobs to be run simultaneously, which can improve compile times on machines with multiple cores. The optimal `-j` setting varies between machines, but a good rule of thumb is the number of cores plus one. For example, on a 2-core system, use `make -j3`.
+
+__to get the number of cpu cores on linux__
+`cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l`
+or simply
+`grep -c ^processor /proc/cpuinfo`   
+which will count the number of lines starting with "processor" in /proc/cpuinfo
+
+For systems with hyper-threading, you can use
+`grep ^cpu\\scores /proc/cpuinfo | uniq |  awk '{print $4}'`
 
 ### build and include sc3-plugins on raspberry pi
 * if not already done, install cmake
